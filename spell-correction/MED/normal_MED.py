@@ -1,9 +1,11 @@
 # module to calculate Minimum editing distance by normal method
 
 
-def calculate(given_str=input("Enter the string to be changed\n"), \
-              desired_str=input("Enter the desired string\n")):
-
+def calculate(given_str=None, desired_str=None):
+    if given_str is None:
+        given_str = input("Enter the string to be changed\n")
+    if desired_str is None:
+        desired_str = input("Enter the desired string\n")
     # distance(given_str, desired_str) , matrix form
     """
         d e s i r e d s t r
@@ -17,7 +19,7 @@ def calculate(given_str=input("Enter the string to be changed\n"), \
     t 8
     r 9                    MED
 
-    MED = distance[len(given_str) - 1][len(desired_str) - 1]
+    MED = distance[len(given_str)][len(desired_str)]
     """
 
     # initialize first row  ie dist(0, j)
@@ -39,7 +41,7 @@ def calculate(given_str=input("Enter the string to be changed\n"), \
 
     # print(distance)
     # print(distance[len(given_str) - 1][len(desired_str) - 1])
-    return distance[len(given_str) - 1][len(desired_str) - 1]
+    return distance[len(given_str)][len(desired_str)]
 
 if __name__ == "__main__":
-    print("MED:", calculate())
+    print("MED:", calculate("intention", "execution"))
