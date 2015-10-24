@@ -5,7 +5,7 @@ assumptions = "Assumption(s):\n" \
               "\tEverything is alphanumeric"
 
 
-def calculate_accuracy(verbose=False):
+def calculate_accuracy(verbose=False, words=None):
     from preprocessing import utilities
     from MED import normal_MED
     from collections import defaultdict
@@ -13,8 +13,9 @@ def calculate_accuracy(verbose=False):
 
     if verbose:
         print(dictionary)
-    words = utilities.parse_sentences(utilities.get_random_300_sentences(
-        file_name="preprocessing/holbrook-tagged.dat.txt"))
+    if words is None:
+        words = utilities.parse_sentences(utilities.get_random_300_sentences(
+            file_name="preprocessing/holbrook-tagged.dat.txt"))
     print(len(words), "erroneous words found in randomly selected 300 sentences")
     if verbose:
         print(words)
@@ -46,11 +47,12 @@ def calculate_accuracy(verbose=False):
     if verbose:
         print(results)
 
-    print("Correctly detected", correctly_detected, "out of", len(results), "words")
-    print("Accuracy", detection_accuracy_percentage, '%')
+    # print("Correctly detected", correctly_detected, "out of", len(results), "words")
+    # print("Accuracy", detection_accuracy_percentage, '%')
 
     return detection_accuracy_percentage
 
 
 if __name__ == "__main__":
+    print("Dictionary approach accuracy", calculate_accuracy(), '%')
     calculate_accuracy()

@@ -77,8 +77,8 @@ def get_trigrams(dictionary):
     return trigrams
 
 """tri = get_trigrams(get_dictionary())
-print(tri)
+print(len(tri))
 for trigram in tri:
     if len(trigram) != 3:
         print(trigram)
-        """
+      """
