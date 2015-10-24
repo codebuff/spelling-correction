@@ -114,8 +114,10 @@ class BackTraceMED:
         print()
         print(' '.join(desired))
         if print_procedure:
+            step = 1
             while task:
-                print(task.pop())
+                print("Step", step, task.pop())
+                step += 1
 
     def print_procedure(self):
         self.print_alignment(print_procedure=True)
@@ -125,3 +127,4 @@ if __name__ == "__main__":
     med = BackTraceMED()
     print("MED ", med.calculate())
     med.print_procedure()
+    med.print_alignment()
