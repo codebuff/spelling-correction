@@ -44,4 +44,4 @@ def calculate(given_str=None, desired_str=None):
     return distance[len(given_str)][len(desired_str)]
 
 if __name__ == "__main__":
-    print("MED:", calculate("intention", "execution"))
+    print("MED:", calculate())

@@ -1,23 +1,51 @@
-def get_dictionary(file_name="big.txt"):
-    """
-    :param file_name: dictionary will be generated from this file.
-    :return: dictionary = { char in alphabetical order :
-                           list of unique words starting with this car
-              }
-    """
+def get_words_set(file_name="big.txt"):
     import re
-    from collections import defaultdict
     file = open(file_name, mode="r")
     file_content = file.read()
     file.close()
-    word_set = set(re.sub('\W+', ' ', file_content).lower().split())
-    print(len(word_set), "unique words found in", file_name)
-    word_dict = defaultdict(list)
-    for word in word_set:
-        word_dict[word[0]].append(word)
-    for char in word_dict:
-        word_dict[char] = sorted(word_dict[char])
-    return word_dict
+    words_set = set(re.sub('\W+', ' ', file_content).lower().split())
+    print(len(words_set), "unique words found in", file_name)
+    return words_set
+
+
+def get_dictionary(words_set):
+    """
+    :param words_set: dictionary will be generated from this file.
+    :return: dictionary = { char in alphabetical order :
+                           list of unique words starting with this char
+              }
+    """
+    from collections import defaultdict
+    words_dict = defaultdict(list)
+    for word in words_set:
+        words_dict[word[0]].append(word)
+    for char in words_dict:
+        words_dict[char] = sorted(words_dict[char])
+    return words_dict
+
+
+def get_sorted_linear_dictionary(words_set):
+    """
+    :param words_set:
+    :return: a list first sorted alphabetically and then by length of word
+    """
+    words_list = list(words_set)
+    words_list = sorted(words_list)
+    words_list = sorted(words_list, key=len)
+    return words_list
+
+
+def get_indexes_list(sorted_linear_dictionary):
+    """
+    :return:a list which contains positions at which length of string changes
+    in size sorted word_list
+    """
+    indexes = {}
+    length = 0
+    for pos in range(len(sorted_linear_dictionary)):
+        if len(sorted_linear_dictionary[pos]) > length:
+            indexes[len(sorted_linear_dictionary[pos])] = pos
+        length = len(sorted_linear_dictionary[pos])
 
 
 def get_all_sentences(file_name="holbrook-tagged.dat.txt"):
@@ -34,7 +62,7 @@ def get_random_300_sentences(file_name="holbrook-tagged.dat.txt", start=None):
     if start is None:
         import random
         start = random.randint(0, len(sentences_list) - 301)
-    print("Taking sentences from line no", start, "to", start + 300, "from", file_name)
+    print("Taking 300 sentences from line no", start, "to", start + 300, "from", file_name)
     return sentences_list[start:start+301]
 
 
@@ -62,18 +90,17 @@ def parse_sentences(sentences_list):
     return words
 
 
-def get_trigrams(dictionary):
+def get_trigrams(words_set):
     print("generating trigrams")
     from collections import Counter
     trigrams = Counter()
-    for key in dictionary:
-        word_trigram = []
-        for word in dictionary[key]:
-            index = 0
-            while (index+2) < len(word):
-                word_trigram.append(word[index:index+3])
-                index += 1
-            trigrams.update(word_trigram)
+    word_trigram = []
+    for word in words_set:
+        index = 0
+        while (index+2) < len(word):
+            word_trigram.append(word[index:index+3])
+            index += 1
+        trigrams.update(word_trigram)
     return trigrams
 
 """tri = get_trigrams(get_dictionary())
