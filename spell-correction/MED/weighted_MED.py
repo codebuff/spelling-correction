@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-
 # class to calculate Minimum editing distance with backtrace
-class BackTraceMED:
+class WeightedMED:
     def __init__(self):
+        from MED.confusion_matrices import  ConfusionMatrices
         self.path = None
         self.distance = None
         self.given_str = None
         self.desired_str = None
+        self.mtx = ConfusionMatrices()
 
     def set_str(self, given_str=None, desired_str=None):
         if given_str is None:
@@ -47,12 +48,13 @@ class BackTraceMED:
                           for i in range(1, len(self.given_str) + 1)]
         for row in range(1, len(self.given_str) + 1):
             for col in range(1, len(self.desired_str) + 1):
-                directions = list([self.distance[row - 1][col] + 1])  # deletion
-                directions.append(self.distance[row][col - 1] + 1)  # insertion
+                directions = list([self.distance[row - 1][col] + self.mtx.get_del_cost(self.given_str[row - 1])])  # deletion
+                directions.append(self.distance[row][col - 1] + self.mtx.get_insert_cost(self.desired_str[col - 1]))  # insertion
                 if self.given_str[row - 1] == self.desired_str[col - 1]:  # substitution
                     directions.append(self.distance[row - 1][col - 1])
                 else:
-                    directions.append(self.distance[row - 1][col - 1] + 2)
+                    directions.append(self.distance[row - 1][col - 1] + self.mtx.get_sub_cost(self.given_str[row - 1],
+                                                                                          self.desired_str[col - 1]))
                 minimum = min(directions)
                 self.distance[row][col] = minimum
                 # todo(dt) take care of multiple paths
@@ -80,13 +82,15 @@ class BackTraceMED:
         return self.path[x][y][3]
 
     def print_alignment(self, print_steps=False):
-        from ..preprocessing import utilities
+        from preprocessing import utilities
 
         self.validate()
 
         given = list(self.given_str)
         desired = list(self.desired_str)
+
         task = []
+
         row = len(self.given_str)
         col = len(self.desired_str)
 
@@ -120,6 +124,7 @@ class BackTraceMED:
             print('|', end=" ")
         print()
         print(' '.join(desired))
+
         if print_steps:
             utilities.print_banner('Steps')
             step = 1
@@ -130,9 +135,8 @@ class BackTraceMED:
     def print_steps(self):
         self.print_alignment(print_steps=True)
 
-
-if __name__ == "__main__":
-    med = BackTraceMED()
-    print("MED with backtracing ", med.calculate())
+if __name__ == '__main__':
+    med = WeightedMED()
+    print('Weighted MED', med.calculate())
     med.print_steps()
-    # med.print_alignment()
+    med.print_alignment()

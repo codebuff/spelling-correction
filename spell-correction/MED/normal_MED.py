@@ -1,11 +1,13 @@
+#!/usr/bin/env python3
 # module to calculate Minimum editing distance by normal method
-
-
 def calculate(given_str=None, desired_str=None):
+
     if given_str is None:
         given_str = input("Enter the string to be changed\n")
+
     if desired_str is None:
         desired_str = input("Enter the desired string\n")
+
     # distance(given_str, desired_str) , matrix form
     """
         d e s i r e d s t r
@@ -28,6 +30,7 @@ def calculate(given_str=None, desired_str=None):
     # initialize first column ie dist(j, 0)
     # using (nested) list comprehension and ternary operator
     distance += [[i if k == 0 else -1 for k in range(len(desired_str) + 1)] for i in range(1, len(given_str) + 1)]
+
     for i in range(1, len(given_str) + 1):
         for j in range(1, len(desired_str) + 1):
             paths = list([distance[i - 1][j] + 1])
@@ -44,4 +47,4 @@ def calculate(given_str=None, desired_str=None):
     return distance[len(given_str)][len(desired_str)]
 
 if __name__ == "__main__":
-    print("MED:", calculate())
+    print("MED by normal method:", calculate())

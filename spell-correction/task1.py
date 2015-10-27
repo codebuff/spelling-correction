@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+task = 'spell checker Without Dictionary' \
+       'calculate detection accuracy'
+
 from preprocessing import utilities
 
 
@@ -70,48 +74,23 @@ def calculate_detection_accuracy(threshold, test_data):
     return accuracy
 
 
-def calculate_correction_accuracy(threshold, test_data):
-    correctly_corrected = 0
-    for incorrect_word in test_data:
-        if calculate_score(incorrect_word) < threshold:
-            index = 0
-            while (index + 2) < len(incorrect_word):
-                score += normalized_trigrams[incorrect_word[index:index + 3]]
-                index += 1
-            correctly_corrected += 1
-    accuracy = (correctly_corrected/len(test_data)) * 100
-    # print("Accuracy", accuracy, "%")
-    return accuracy
+def calculate_accuracies(test_data=None, runs=1):
+    #  TODO(dt) if needed, implement calculation of correction accuracy percentage
 
-
-def calculate_accuracy(test_data=None):
     threshold = get_threshold(get_scores())
-    if test_data is None:
-        test_data = utilities.parse_sentences(utilities.get_random_300_sentences(
-            file_name="preprocessing/holbrook-tagged.dat.txt"))
-    print(len(test_data), "tagged erroneous words found in randomly selected 300 sentences")
+    detection_accuracy = 0
 
-    detection_accuracy = calculate_detection_accuracy(threshold, test_data)
-    return {'detection_accuracy_percentage': detection_accuracy}
+    for run in range(runs):
+        print('Iteration', run)
+        if test_data is None:
+            test_data = utilities.parse_sentences(utilities.get_random_300_sentences(
+                file_name="preprocessing/holbrook-tagged.dat.txt"))
+        print(len(test_data), "tagged erroneous words found in randomly selected 300 sentences")
+
+        detection_accuracy += calculate_detection_accuracy(threshold, test_data)
+    # return {'detection_accuracy_percentage': detection_accuracy}
+    return detection_accuracy/runs
 
 
-def compare_trigram_with_dictionary():
-    import task0
-    test_data = utilities.parse_sentences(utilities.get_random_300_sentences(
-            file_name="preprocessing/holbrook-tagged.dat.txt"))
-
-    print("\n==== Trigram approach ====")
-    tri_approach = calculate_accuracy(test_data=test_data)
-    print("Trigram approach accuracy ", tri_approach, "%")
-
-    print("\n==== Dictionary approach ====")
-    dict_approach = task0.calculate_accuracies(test_data=test_data)
-    print("Dictionary approach accuracy", dict_approach, "%")
-
-    print("\n==== Comparison ====")
-    print("Dictionary approach:", dict_approach, "% || Trigram approach", tri_approach, "%")
-
-# print("Accuracy", calculate_accuracy(), "%")
 if __name__ == "__main__":
-    print("Trigram approach accuracy", calculate_accuracy(), '%')
-    compare_trigram_with_dictionary()
+    print("Trigram approach accuracy", calculate_accuracies(), '%')

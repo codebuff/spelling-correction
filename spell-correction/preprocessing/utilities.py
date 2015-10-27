@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 def get_words_set(file_name="big.txt"):
     import re
     file = open(file_name, mode="r")
@@ -37,7 +38,7 @@ def get_sorted_linear_dictionary(words_set):
 
 def get_indexes_list(sorted_linear_dictionary):
     """
-    :return:a list which contains positions at which length of string changes
+    :return:a list which contains positions at which length of word changes
     in size sorted word_list
     """
     indexes = {}
@@ -46,18 +47,19 @@ def get_indexes_list(sorted_linear_dictionary):
         if len(sorted_linear_dictionary[pos]) > length:
             indexes[len(sorted_linear_dictionary[pos])] = pos
         length = len(sorted_linear_dictionary[pos])
+    return indexes
 
 
 def get_all_sentences(file_name="holbrook-tagged.dat.txt"):
     file = open(file_name, "r")
-    sentences_list = file.read().splitlines()
+    sentences_list = file.read().lower().splitlines()
     file.close()
     return sentences_list
 
 
 def get_random_300_sentences(file_name="holbrook-tagged.dat.txt", start=None):
     file = open(file_name, "r")
-    sentences_list = file.read().splitlines()
+    sentences_list = file.read().lower().splitlines()
     file.close()
     if start is None:
         import random
@@ -66,14 +68,14 @@ def get_random_300_sentences(file_name="holbrook-tagged.dat.txt", start=None):
     return sentences_list[start:start+301]
 
 
-def sanitize_sentences(sentences):
+def sanitize_sentences(sentences_list):
     import re
     sent = 0
-    while sent != len(sentences):
-        sentences[sent] = re.sub('<ERR.*ERR>', '', sentences[sent])
-        sentences[sent] = re.sub('\W+', ' ', sentences[sent])
+    while sent != len(sentences_list):
+        sentences_list[sent] = re.sub('<err.*err>', '', sentences_list[sent])
+        sentences_list[sent] = re.sub('\W+', ' ', sentences_list[sent])
         sent += 1
-    return sentences
+    return sentences_list
 
 
 def parse_sentences(sentences_list):
@@ -82,30 +84,27 @@ def parse_sentences(sentences_list):
     :return: dictionary = { incorrect_word : correct_word }
     """
 
-    words = dict()
+    test_data = dict()
     for sentence in sentences_list:
-        if '<ERR' in sentence:
-            temp = sentence.split(sep='<ERR')[1].split(sep='</ERR>')[0].split(sep='>')
-            words[temp[1].strip().lower()] = temp[0].split(sep='=')[1].lower().strip()
-    return words
+        if '<err' in sentence:
+            temp = sentence.split(sep='<err')[1].split(sep='</err>')[0].split(sep='>')
+            test_data[temp[1].strip().lower()] = temp[0].split(sep='=')[1].lower().strip()
+    return test_data
 
 
 def get_trigrams(words_set):
     print("generating trigrams")
     from collections import Counter
     trigrams = Counter()
-    word_trigram = []
     for word in words_set:
         index = 0
+        word_trigram = []
         while (index+2) < len(word):
             word_trigram.append(word[index:index+3])
             index += 1
         trigrams.update(word_trigram)
     return trigrams
 
-"""tri = get_trigrams(get_dictionary())
-print(len(tri))
-for trigram in tri:
-    if len(trigram) != 3:
-        print(trigram)
-      """
+
+def print_banner(text):
+    print("\n  === " + text + " ===  \n")
