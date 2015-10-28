@@ -2,9 +2,9 @@ def compare_trigram_with_dictionary():
     """
     compares detection accuracy of trigram approach with dictionary approach
     """
-    from preprocessing import utilities
-    import task0
-    import task1
+    from .preprocessing import utilities
+    from . import task0
+    from . import task1
 
     utilities.print_banner('Benchmarking Trigram approach against Dictionary approach')
 
@@ -30,9 +30,9 @@ def compare_dictionary_with_hashed_dictionary():
     and Hashed Dictionary / Bit map Approach
     :return:
     """
-    from preprocessing import utilities
+    from .preprocessing import utilities
     import timeit
-    setup = 'import task0 ;import task2;from preprocessing import utilities ;' \
+    setup = 'from . import task0 ;from . import task2;from .preprocessing import utilities ;' \
             'test_data = utilities.parse_sentences(utilities.get_random_300_sentences(' \
             'file_name=\"preprocessing/holbrook-tagged.dat.txt\"))'
     utilities.print_banner('Comparing execution speeds and Accuracy')

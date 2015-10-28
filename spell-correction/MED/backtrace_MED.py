@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-
-# class to calculate Minimum editing distance with backtrace
 class BackTraceMED:
+    """
+    class to calculate Minimum editing distance with backtrace
+    """
     def __init__(self):
         self.path = None
         self.distance = None

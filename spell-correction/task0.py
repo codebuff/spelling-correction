@@ -10,12 +10,11 @@ task = 'spell checked with dictionary' \
 
 
 def calculate_detection_accuracy(words_set, sentences=None, test_data=None, verbose=False):
-    from preprocessing import utilities
+    from .preprocessing import utilities
     words_list = utilities.get_sorted_linear_dictionary(words_set)
 
     if sentences is None:
-        sentences = utilities.sanitize_sentences(utilities.get_all_sentences(
-            file_name="preprocessing/holbrook-tagged.dat.txt"))
+        sentences = utilities.sanitize_sentences(utilities.get_all_sentences())
 
     detected = 0
     no_of_words_in_sentences = 0
@@ -28,8 +27,7 @@ def calculate_detection_accuracy(words_set, sentences=None, test_data=None, verb
                 detected += 1
 
     if test_data is None:
-        test_data = utilities.parse_sentences(utilities.get_random_300_sentences(
-            file_name="preprocessing/holbrook-tagged.dat.txt"))
+        test_data = utilities.parse_sentences(utilities.get_random_300_sentences())
 
     for incorrect_word in test_data:
         if incorrect_word not in words_list:
@@ -40,13 +38,12 @@ def calculate_detection_accuracy(words_set, sentences=None, test_data=None, verb
 
 
 def calculate_correction_accuracy(dictionary, test_data=None, verbose=False):
-    from preprocessing import utilities
-    from MED import normal_MED
+    from .preprocessing import utilities
+    from .MED import normal_MED
     from collections import defaultdict
 
     if test_data is None:
-        test_data = utilities.parse_sentences(utilities.get_random_300_sentences(
-                file_name="preprocessing/holbrook-tagged.dat.txt"))
+        test_data = utilities.parse_sentences(utilities.get_random_300_sentences())
 
     if verbose:
         print(test_data)
@@ -85,12 +82,12 @@ def calculate_correction_accuracy(dictionary, test_data=None, verbose=False):
 
 
 def calculate_accuracies(test_data=None, runs=1, verbose=False):
-    from preprocessing import utilities
+    from .preprocessing import utilities
 
     utilities.print_banner('In order to increase search speed, it has been assumed\n'
                            'that user types first character of word correctly')
 
-    words_set = utilities.get_words_set(file_name="preprocessing/big.txt")
+    words_set = utilities.get_words_set()
     dictionary = utilities.get_dictionary(words_set)
     detection_accuracy_percentage = 0
     correction_accuracy_percentage = 0
@@ -98,8 +95,7 @@ def calculate_accuracies(test_data=None, runs=1, verbose=False):
     for run in range(runs):
         print("Iteration:", run)
         if test_data is None:
-            test_data = utilities.parse_sentences(utilities.get_random_300_sentences(
-                file_name="preprocessing/holbrook-tagged.dat.txt"))
+            test_data = utilities.parse_sentences(utilities.get_random_300_sentences())
 
         print(len(test_data), "tagged erroneous words found in randomly selected 300 sentences")
         detection_accuracy_percentage += calculate_detection_accuracy(words_set=words_set, test_data=test_data,

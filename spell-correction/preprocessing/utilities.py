@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-def get_words_set(file_name="big.txt"):
+def get_path():
+    import os
+    return os.getcwd()
+
+
+def get_words_set(file_name=None):
+    if file_name is None:
+        file_name = get_path() + "/spell-correction/preprocessing/big.txt"
     import re
     file = open(file_name, mode="r")
     file_content = file.read()
@@ -50,14 +57,18 @@ def get_indexes_list(sorted_linear_dictionary):
     return indexes
 
 
-def get_all_sentences(file_name="holbrook-tagged.dat.txt"):
+def get_all_sentences(file_name=None):
+    if file_name is None:
+        file_name = get_path() + "/spell-correction/preprocessing/holbrook-tagged.dat.txt"
     file = open(file_name, "r")
     sentences_list = file.read().lower().splitlines()
     file.close()
     return sentences_list
 
 
-def get_random_300_sentences(file_name="holbrook-tagged.dat.txt", start=None):
+def get_random_300_sentences(file_name=None, start=None):
+    if file_name is None:
+        file_name = get_path() + "/spell-correction/preprocessing/holbrook-tagged.dat.txt"
     file = open(file_name, "r")
     sentences_list = file.read().lower().splitlines()
     file.close()

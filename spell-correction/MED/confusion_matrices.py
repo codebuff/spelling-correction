@@ -16,10 +16,12 @@ class ConfusionMatrices:
         self.process_test_data()
 
     def get_test_data(self):
-        from preprocessing import utilities
+        from ..preprocessing import utilities
+        import os
         import re
+        file_name = os.getcwd() + '/spell-correction/MED/spell-errors.txt'
         self.test_data = dict()
-        sentences_list = utilities.get_all_sentences(file_name='../MED/spell-errors.txt')
+        sentences_list = utilities.get_all_sentences(file_name=file_name)
         for sentence in sentences_list:
             sections = sentence.split(sep=':')
             self.test_data[sections[0]] = re.sub('\W+', ' ', sections[1]).lower().split()

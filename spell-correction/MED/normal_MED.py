@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-# module to calculate Minimum editing distance by normal method
 def calculate(given_str=None, desired_str=None):
-
+    """
+    calculates Minimum editing distance without backtracing
+    :param given_str:
+    :param desired_str:
+    :return:
+    """
     if given_str is None:
         given_str = input("Enter the string to be changed\n")
 

@@ -79,15 +79,8 @@ class WordTable:
         return self.contains_words(word)
 
 
-def create_hashed_dictionary(words_set=None):
-    if words_set is None:
-        import re
-        file_name = "preprocessing/big.txt"
-        file = open(file_name, mode="r")
-        file_content = file.read()
-        file.close()
-        words_set = set(re.sub('\W+', ' ', file_content).lower().split())
-        print(len(words_set), "unique words found in", file_name)
+def create_hashed_dictionary(words_set):
+    print(len(words_set), "unique words found")
 
     print("Saving all the words in hashmap")
 
@@ -99,11 +92,10 @@ def create_hashed_dictionary(words_set=None):
 
 
 def calculate_detection_accuracy(dictionary, sentences=None, test_data=None):
-    from preprocessing import utilities
+    from .preprocessing import utilities
 
     if sentences is None:
-        sentences = utilities.sanitize_sentences(utilities.get_all_sentences(
-            file_name="preprocessing/holbrook-tagged.dat.txt"))
+        sentences = utilities.sanitize_sentences(utilities.get_all_sentences())
 
     detected = 0
     no_of_words_in_sentences = 0
@@ -116,8 +108,7 @@ def calculate_detection_accuracy(dictionary, sentences=None, test_data=None):
                 detected += 1
 
     if test_data is None:
-        test_data = utilities.parse_sentences(utilities.get_random_300_sentences(
-            file_name="preprocessing/holbrook-tagged.dat.txt"))
+        test_data = utilities.parse_sentences(utilities.get_random_300_sentences())
 
     for incorrect_word in test_data:
         if incorrect_word not in dictionary:
@@ -129,7 +120,7 @@ def calculate_detection_accuracy(dictionary, sentences=None, test_data=None):
 
 
 def get_top3_matches(incorrect_word, words_list):
-    from MED import normal_MED
+    from .MED import normal_MED
     top3_matches = []
     med_dict = dict()
     for word in words_list:
@@ -145,13 +136,12 @@ def get_top3_matches(incorrect_word, words_list):
 
 
 def calculate_correction_accuracy(words_list, indexes, test_data=None, verbose=False):
-    from preprocessing import utilities
+    from .preprocessing import utilities
 
     corrected = 0
 
     if test_data is None:
-        test_data = utilities.parse_sentences(utilities.get_random_300_sentences(
-            file_name="preprocessing/holbrook-tagged.dat.txt"))
+        test_data = utilities.parse_sentences(utilities.get_random_300_sentences())
     if verbose:
         print(test_data)
 
@@ -189,9 +179,9 @@ def calculate_correction_accuracy(words_list, indexes, test_data=None, verbose=F
 
 
 def calculate_accuracies(test_data=None, runs=1, verbose=False):
-    from preprocessing import utilities
+    from .preprocessing import utilities
 
-    words_set = utilities.get_words_set(file_name="preprocessing/big.txt")
+    words_set = utilities.get_words_set()
     words_list = utilities.get_sorted_linear_dictionary(words_set)
     indexes = utilities.get_indexes_list(words_list)
     hashed_dictionary = create_hashed_dictionary(words_set=words_set)
@@ -201,8 +191,7 @@ def calculate_accuracies(test_data=None, runs=1, verbose=False):
 
     for run in range(runs):
         if test_data is None:
-            test_data = utilities.parse_sentences(utilities.get_random_300_sentences(
-                file_name="preprocessing/holbrook-tagged.dat.txt"))
+            test_data = utilities.parse_sentences(utilities.get_random_300_sentences())
         print(len(test_data), "tagged erroneous words found in randomly selected 300 sentences")
 
         detection_accuracy_percentage += calculate_detection_accuracy(dictionary=hashed_dictionary, test_data=test_data)

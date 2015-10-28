@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-# class to calculate Minimum editing distance with backtrace
 class WeightedMED:
+    """
+    class to calculate Minimum editing distance with backtrace
+    """
     def __init__(self):
-        from MED.confusion_matrices import  ConfusionMatrices
+        from .confusion_matrices import ConfusionMatrices
         self.path = None
         self.distance = None
         self.given_str = None
@@ -82,7 +84,7 @@ class WeightedMED:
         return self.path[x][y][3]
 
     def print_alignment(self, print_steps=False):
-        from preprocessing import utilities
+        from ..preprocessing import utilities
 
         self.validate()
 

@@ -2,13 +2,13 @@
 task = 'spell checker Without Dictionary' \
        'calculate detection accuracy'
 
-from preprocessing import utilities
+from .preprocessing import utilities
 
 
 def process_trigrams():
     import math
     from collections import Counter
-    trigrams = utilities.get_trigrams(utilities.get_words_set(file_name="preprocessing/big.txt"))
+    trigrams = utilities.get_trigrams(utilities.get_words_set())
     total_trigrams = len(trigrams)
     top_20_percent = trigrams.most_common(math.ceil(0.2 * total_trigrams))
     normalized_trigrams_ = Counter()
@@ -29,7 +29,7 @@ def calculate_score(word):
 
 
 def get_scores():
-    sentences = utilities.get_all_sentences(file_name="preprocessing/holbrook-tagged.dat.txt")
+    sentences = utilities.get_all_sentences()
 
     test_data = utilities.parse_sentences(sentences)
 
@@ -83,8 +83,7 @@ def calculate_accuracies(test_data=None, runs=1):
     for run in range(runs):
         print('Iteration', run)
         if test_data is None:
-            test_data = utilities.parse_sentences(utilities.get_random_300_sentences(
-                file_name="preprocessing/holbrook-tagged.dat.txt"))
+            test_data = utilities.parse_sentences(utilities.get_random_300_sentences())
         print(len(test_data), "tagged erroneous words found in randomly selected 300 sentences")
 
         detection_accuracy += calculate_detection_accuracy(threshold, test_data)
