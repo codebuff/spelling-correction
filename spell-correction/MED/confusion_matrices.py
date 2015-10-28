@@ -74,7 +74,7 @@ class ConfusionMatrices:
                     else:
                         self.path[row][col] = [(row-1), (col-1), "diagonal", "substitution"]
 
-    def update_confusion_matrices(self, print_procedure=False):
+    def update_confusion_matrices(self):
         given = list(self.given_str)
         desired = list(self.desired_str)
         row = len(self.given_str)

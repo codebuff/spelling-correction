@@ -91,5 +91,30 @@ def calculate_accuracies(test_data=None, runs=1):
     return detection_accuracy/runs
 
 
+def compare_trigram_with_dictionary():
+    """
+    compares detection accuracy of trigram approach with dictionary approach
+    """
+    from .preprocessing import utilities
+    from . import task0
+    from . import task1
+
+    utilities.print_banner('Comparing Trigram approach against Dictionary approach')
+
+    words_set = utilities.get_words_set()
+    test_data = utilities.parse_sentences(utilities.get_random_300_sentences())
+
+    utilities.print_banner("Dictionary approach")
+    dict_approach = task0.calculate_detection_accuracy(words_set=words_set, test_data=test_data)
+    print("Dictionary approach accuracy", dict_approach, "%")
+
+    utilities.print_banner("Trigram approach")
+    tri_approach = task1.calculate_accuracies(test_data=test_data)
+    print("Trigram approach accuracy ", tri_approach, "%")
+
+    utilities.print_banner("Comparison")
+    print("Dictionary approach:", dict_approach, "% || Trigram approach", tri_approach, "%")
+
 if __name__ == "__main__":
     print("Trigram approach accuracy", calculate_accuracies(), '%')
+    compare_trigram_with_dictionary()
