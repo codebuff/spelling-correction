@@ -38,8 +38,8 @@ def get_sorted_linear_dictionary(words_set):
     :return: a list first sorted alphabetically and then by length of word
     """
     words_list = list(words_set)
-    words_list = sorted(words_list)
-    words_list = sorted(words_list, key=len)
+    words_list.sort()
+    words_list.sort(key=len)
     return words_list
 
 
@@ -119,3 +119,7 @@ def get_trigrams(words_set):
 
 def print_banner(text):
     print("\n  === " + text + " ===  \n")
+
+#words_set = get_words_set(file_name='big.txt')
+#words_list = get_sorted_linear_dictionary(words_set)
+#print(words_list)
