@@ -88,8 +88,7 @@ executes all the MEDs
 ---
 *Note for tasks listed below:* 
 
-In every task , 300 sentences are chosen randomly
-Everything is converted to lowercase first and anything except alphanumeric is removed
+In every task , 300 sentences are chosen randomly.Everything is converted to lowercase first and anything except alphanumeric is removed.
 
 ---
 
@@ -110,7 +109,7 @@ Dictionary approach accuracy %ages {'detection_accuracy_percentage': 96.74818418
 ```python
 python -m spell-correction.task1
 ```
-Comment : in this task only detection accuracy have been calculated , for calculating correction accuracy one approach could be try out all the permutation and see if it crosses threshold and compare against actual correct word, another approach would be to use frequencies from confusion matrices, however could not decide on which one thus it has been avoided
+Comment : in this task only detection accuracy have been calculated , for calculating correction accuracy one approach could be to try out all the permutation and see if it crosses threshold and compare against actual correct word, another approach would be to use frequencies from confusion matrices, however could not decide on which one thus it has been avoided.
 ```
 32198 unique words found in /home/deepankar/workspace/nlp/spell-correction/preprocessing/big.txt
 generating trigrams
@@ -153,7 +152,7 @@ Dictionary approach: 96.81200187529302 % || Trigram approach 58.88888888888889 %
 ---
 *Comparison of performance (execution speed) between Linear Dictionary / Brute Force Approach and Hashed Dictionary / Bit map Approach*
 
-A custom hashmap has been implemented which does increase the detection speed, however correction speed is still slower than dictionary approach  likely due to assumption while searching in dictionary approach .
+A custom hashmap has been implemented which does increase the detection speed, however correction speed is still slower than dictionary approach likely due to assumption while searching in dictionary approach .
 
 Correcting by dictionary approach takes around 30 seconds and with bitmap approach takes around 200 seconds on same test data 
 In order to increase the speed in bitmap searching one suggestion is only look for string of same length as incorrect word instead of length , length + 1 and length - 1 but that would bring down the correction accuracy of bitmap approach which is higher than dictionary approach.
@@ -184,4 +183,4 @@ The counts in substitution matrix will be updated far less times than deletion o
 
 As a result of this
 
-when alignment or steps is printed in output,most of the times they will be mostly composed of substitution only since every count in all the matrices are initialized with zero and substitution matrices is highly likely to contain zeroes leading to substitution path being chosen when path is selected by algorithm dynamically
+when alignment or steps is printed in output,most of the times they will be composed of substitution only since every count in all the matrices are initialized with zero and substitution matrices is highly likely to contain zeroes leading to substitution path being chosen when path is selected by algorithm dynamically.
